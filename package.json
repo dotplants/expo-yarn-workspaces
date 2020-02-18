@@ -14,20 +14,17 @@
     "access": "public"
   },
   "scripts": {
-    "lint:prettier": "pretty-quick --check",
-    "lint:eslint": "eslint --ignore-path .gitignore \"**/*.ts\"",
+    "lint:eslint": "eslint --ignore-path .gitignore --ignore-path .eslintignore \"**/*.js\"",
     "lint": "npm-run-all lint:* -s",
-    "format:prettier": "pretty-quick",
-    "format:js": "eslint --fix --ignore-path .gitignore \"**/*.ts\"",
+    "format:js": "eslint --fix --ignore-path .gitignore --ignore-path .eslintignore \"**/*.js\"",
     "format": "npm-run-all format:* -s"
   },
   "devDependencies": {
     "@yuzulabo/eslint-config": "^1.0.1",
     "@yuzulabo/prettier-config": "~1",
+    "babel-eslint": "^10.0.3",
     "eslint": "~6",
-    "npm-run-all": "~4",
-    "prettier": "~1",
-    "pretty-quick": "^2.0.1"
+    "npm-run-all": "~4"
   },
   "prettier": "@yuzulabo/prettier-config",
   "dependencies": {
