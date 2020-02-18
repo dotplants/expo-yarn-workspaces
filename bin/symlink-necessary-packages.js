@@ -6,7 +6,7 @@ const findYarnWorkspaceRoot = require('find-yarn-workspace-root');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
-const spawnSync = require('../common/cross-spawn-sync');
+const sudo = require('sudo-prompt');
 
 /**
  * Creates symlinks for packages that some programs expect to be under the project's node_modules
@@ -53,7 +53,7 @@ function symlinkNecessaryPackage(projectPath, packageName) {
     debug(`Creating symlink from %s to %s`, path.join(scopePath, name), relativePackagePath);
     fs.symlinkSync(relativePackagePath, path.join(scopePath, name));
   } else {
-    let relativePackagePath = path.resolve('', '../../', packageName);
+    let relativePackagePath = path.resolve(process.env.INIT_CWD, 'node_modules', packageName);
     //let relativePackagePath = path.relative(nodeModulesPath, workspacePackagePath);
     console.log(relativePackagePath);
 
@@ -69,11 +69,14 @@ function symlinkNecessaryPackage(projectPath, packageName) {
       fs.symlinkSync(relativePackagePath, path.join(nodeModulesPath, packageName));
     } catch (_) {
       // for windows
-      const result = spawnSync('mklink', ['/d', path.join(nodeModulesPath, packageName), relativePackagePath]);
-
-      if (result.error) {
-        console.error(result.error);
-      }
+      sudo.exec(`mklink /d ${path.join(nodeModulesPath, packageName)} ${relativePackagePath}`, {
+          name: 'dotplants expo yarn workspaces'
+        },
+        function(error, stdout) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+        }
+      );
     }
   }
 }
