@@ -6,6 +6,7 @@ const findYarnWorkspaceRoot = require('find-yarn-workspace-root');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
+const spawnSync = require('../common/cross-spawn-sync');
 
 /**
  * Creates symlinks for packages that some programs expect to be under the project's node_modules
@@ -52,7 +53,8 @@ function symlinkNecessaryPackage(projectPath, packageName) {
     debug(`Creating symlink from %s to %s`, path.join(scopePath, name), relativePackagePath);
     fs.symlinkSync(relativePackagePath, path.join(scopePath, name));
   } else {
-    let relativePackagePath = path.relative(nodeModulesPath, workspacePackagePath);
+    let relativePackagePath = path.resolve('', '../../', packageName);
+    //let relativePackagePath = path.relative(nodeModulesPath, workspacePackagePath);
     console.log(relativePackagePath);
 
     debug(`Ensuring %s exists`, nodeModulesPath);
@@ -62,7 +64,17 @@ function symlinkNecessaryPackage(projectPath, packageName) {
       path.join(nodeModulesPath, packageName),
       relativePackagePath
     );
-    fs.symlinkSync(relativePackagePath, path.join(nodeModulesPath, packageName));
+
+    try {
+      fs.symlinkSync(relativePackagePath, path.join(nodeModulesPath, packageName));
+    } catch (_) {
+      // for windows
+      const result = spawnSync('mklink', ['/d', path.join(nodeModulesPath, packageName), relativePackagePath]);
+
+      if (result.error) {
+        console.error(result.error);
+      }
+    }
   }
 }
 

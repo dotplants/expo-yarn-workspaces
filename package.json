@@ -1,0 +1,38 @@
+{
+  "name": "@dotplants/expo-yarn-workspaces",
+  "version": "1.2.1",
+  "license": "MIT",
+  "repository": "https://github.com/dotplants/expo-yarn-workspaces.git",
+  "homepage": "https://github.com/dotplants/expo-yarn-workspaces",
+  "bin": {
+    "expo-yarn-workspaces": "./bin/expo-yarn-workspaces.js"
+  },
+  "engines": {
+    "node": "12.x || 13.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint:prettier": "pretty-quick --check",
+    "lint:eslint": "eslint --ignore-path .gitignore \"**/*.ts\"",
+    "lint": "npm-run-all lint:* -s",
+    "format:prettier": "pretty-quick",
+    "format:js": "eslint --fix --ignore-path .gitignore \"**/*.ts\"",
+    "format": "npm-run-all format:* -s"
+  },
+  "devDependencies": {
+    "@yuzulabo/eslint-config": "^1.0.1",
+    "@yuzulabo/prettier-config": "~1",
+    "eslint": "~6",
+    "npm-run-all": "~4",
+    "prettier": "~1",
+    "pretty-quick": "^2.0.1"
+  },
+  "prettier": "@yuzulabo/prettier-config",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "find-yarn-workspace-root": "^1.2.0",
+    "mkdirp": "^0.5.1"
+  }
+}
