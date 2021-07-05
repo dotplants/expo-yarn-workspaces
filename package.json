@@ -28,7 +28,7 @@
   },
   "prettier": "@yuzulabo/prettier-config",
   "dependencies": {
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "find-yarn-workspace-root": "^1.2.0",
     "mkdirp": "^1.0.4",
     "sudo-prompt": "^9.2.1"
